@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
-
 from group.models import Group
 
 User = get_user_model()
@@ -16,10 +15,12 @@ class Post(models.Model):
                               blank=True,
                               null=True)
 
-
     class Meta:
         ordering = ['-pub_date']
+        verbose_name = "Пост"
+        verbose_name_plural = "Посты"
 
-
+    def __str__(self):
+        return self.text
 
 # Create your models here.

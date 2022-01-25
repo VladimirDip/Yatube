@@ -12,17 +12,25 @@
     <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
 </head>
 
+{% include "nav.html" %}
+
 <body>
+<div class="my-n2 offset-xl-10 mr-md-1">
+    <a class="p-2">
+        {% block footer_search %}
 
-    <main>
-        <div class="container">
-            <h1>{% block header %}The Last Social Media You'll Ever Need{% endblock %}</h1>
-            {% block content %}
-            <!-- Содержимое страницы -->
-            {% endblock %}
-        </div>
-    </main>
+        {% endblock %}</a>
 
+</div>
+<main>
+    <div class="container">
+        <h1>{% block header %}The Last Social Media You'll Ever Need{% endblock %}</h1>
+        {% block content %}
+        <!-- Содержимое страницы -->
+        {% endblock %}
+    </div>
+</main>
+{% include "footer.html" %}
 </body>
 
 </html>
