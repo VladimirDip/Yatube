@@ -22,3 +22,8 @@ and writing code. So, I am continuing to learn Django.
         Can registration,
         And some cleaned code
         
+Day 6-7: Good day all. I'm continuing to learn Django and 
+I received some problems with registration users and 
+their password.
+Now I think that I unable to resolve this matter.
+        
