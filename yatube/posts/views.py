@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Post, User
+from .forms import CreatePost
 
 
 # def index(request):
@@ -24,6 +25,22 @@ def index(request):
     else:
         posts = Post.objects.order_by("-pub_date")[:10]
     return render(request, "search_text.html", {"posts": posts, "keyword": keyword})
+
+def add_post(request):
+    if request.method == "POST":
+        form = CreatePost(request.POST)
+        if form.is_valid():
+            author = request.user
+            form.cleaned_data['author'] = author
+            # print(author)
+            date_clean = form.cleaned_data
+            # print(date_clean)
+            post = Post.objects.create(**date_clean)
+            return redirect("index")
+    else:
+        form = CreatePost()
+    return render(request, "add_post.html", {"form": form})
+
 
 
 

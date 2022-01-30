@@ -26,4 +26,6 @@ Day 6-7: Good day all. I'm continuing to learn Django and
 I received some problems with registration users and 
 their password.
 Now I think that I unable to resolve this matter.
+
+Dau 8: Now, I create new form for create a new post
         
