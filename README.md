@@ -27,5 +27,8 @@ I received some problems with registration users and
 their password.
 Now I think that I unable to resolve this matter.
 
-Dau 8: Now, I create new form for create a new post
+Day 8: Now, I create new form for create a new post
+
+Day 9: Today I change form and Html a little bit. Plus,
+I added validation for auth users
         

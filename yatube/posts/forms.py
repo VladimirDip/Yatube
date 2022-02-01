@@ -8,7 +8,6 @@ from django import forms
 class CreatePost(ModelForm):
     class Meta:
         model = Post
-        # fields = ['text','group']
         exclude = ['author']
 
 

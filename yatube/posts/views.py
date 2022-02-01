@@ -1,21 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import Post, User
+from .models import Post
 from .forms import CreatePost
-
-
-# def index(request):
-#     latest = Post.objects.order_by("-pub_date")[:10]
-#     return render(request, "index.html", {"posts": latest})
-
-# def index(request):
-#     author = User.objects.get(username="leo")
-#     keyword = "Утро"
-#     start_date = datetime.date(1854,7, 7)
-#     end_date = datetime.date(1854, 7, 21)
-#     posts = Post.objects.filter(text__contains=keyword
-#                                 ).filter(author=author
-#                                 ).filter(pub_date__range=(start_date, end_date))
-#     return render(request, "index.html", {"posts": posts})
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
@@ -26,15 +12,14 @@ def index(request):
         posts = Post.objects.order_by("-pub_date")[:10]
     return render(request, "search_text.html", {"posts": posts, "keyword": keyword})
 
-def add_post(request):
+@login_required
+def new_post(request):
     if request.method == "POST":
         form = CreatePost(request.POST)
         if form.is_valid():
             author = request.user
             form.cleaned_data['author'] = author
-            # print(author)
             date_clean = form.cleaned_data
-            # print(date_clean)
             post = Post.objects.create(**date_clean)
             return redirect("index")
     else:
