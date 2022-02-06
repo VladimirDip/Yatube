@@ -9,7 +9,7 @@ def index(request):
     if keyword:
         posts = Post.objects.select_related("author", "group").filter(text__contains=keyword)
     else:
-        posts = Post.objects.order_by("-pub_date")[:10]
+        posts = Post.objects.order_by("-pub_date")[:11]
     return render(request, "search_text.html", {"posts": posts, "keyword": keyword})
 
 @login_required
