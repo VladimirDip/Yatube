@@ -31,4 +31,8 @@ Day 8: Now, I create new form for create a new post
 
 Day 9: Today I change form and Html a little bit. Plus,
 I added validation for auth users
+
+Day 10 - 12: Hello anyone. In last time, I am working on
+a profile users and them functions. I didn't know that 
+it very difficult :( but I am trying to do it in near time 
         

@@ -10,18 +10,3 @@
 </form>
 {% endblock %}
 
-{% block content %}
-
-    <div class="container">
-        {% for post in posts %}
-        <strong>
-            Автор: {{ post.author.get_full_name }},
-            Дата публикации: {{ post.pub_date|date:"d M Y" }},
-            Группа: {{ post.group.title }}
-        </strong>
-        <p>{{ post.text|linebreaksbr }}</p>
-        <hr>
-        {% endfor %}
-    </div>
-
-{% endblock %}
