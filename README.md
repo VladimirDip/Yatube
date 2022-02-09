@@ -32,10 +32,15 @@ Day 8: Now, I create new form for create a new post
 Day 9: Today I change form and Html a little bit. Plus,
 I added validation for auth users
 
-Day 10 - 12: Hello anyone. In last time, I am working on
+Day 10 - 12: Hello everyone. In last time, I am working on
 a profile users and them functions. I didn't know that 
 it very difficult :( but I am trying to do it in near time 
 
 Day 12: I continue to work on my project today. Now I add
 profile users, edit their posts and repair some functions
+
+Day 13: Hello everyone. Today, I worked on my project about
+4 hours with documentation books. I cleaned code a little bit
+and created custom form for registration users and fixed it
+bugs. 
         
