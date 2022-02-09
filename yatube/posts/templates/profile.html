@@ -13,7 +13,7 @@
                 </div>
                 <div class="h3 text-muted">
                     <!-- username автора -->
-                    {{ user_post.0.author.username }}
+                    @{{ user_post.0.author.username }}
                 </div>
             </div>
             <ul class="list-group list-group-flush">
@@ -46,7 +46,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group ">
                         <!-- Ссылка на страницу записи в атрибуте href-->
-                        <a class="btn btn-sm text-muted" href="/leo/37/" role="button">Добавить комментарий</a>
+                        <a class="btn btn-sm text-muted" href="{% url 'post' username=post.author post_id=post.id%}" role="button">Добавить комментарий</a>
                         <!-- Ссылка на редактирование, показывается только автору записи -->
                         <a class="btn btn-sm text-muted" href="/leo/37/edit" role="button">Редактировать</a>
                     </div>

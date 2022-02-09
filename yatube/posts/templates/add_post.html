@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% block title %}Добавить пост{% endblock %}
+{% block title %}{{content.title_name}}{% endblock %}
 {% block content %}
 {% load user_filters %}
 
 <div class="row justify-content-center">
     <div class="col-md-8 p-5">
         <div class="card">
-            <div class="card-header">Добавить пост</div>
+            <div class="card-header">{{content.title_name}}</div>
             <div class="card-body">
 
                     {% for error in form.errors %}
@@ -15,8 +15,12 @@
                         </div>
                     {% endfor %}
 
+                {% if selected_post is None %}
+                    <form method="post" action="{% url 'new_post' %}">
+                        {% else %}
+                    <form action="{% url 'post_edit' username=selected_post.author post_id=selected_post.id %}" method="post">
+                        {% endif %}
 
-                <form method="post" action="{% url 'new_post' %}">
                     {% csrf_token %}
 
                     {% for field in form %}
@@ -33,7 +37,7 @@
 
                     <div class="col-md-6 offset-md-4">
                             <button type="submit" class="btn btn-primary">
-                                Добавить пост
+                                {{content.btn_name}}
                             </button>
                     </div>
                 </form>
