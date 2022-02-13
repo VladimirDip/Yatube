@@ -48,7 +48,7 @@ def new_post(request):
 
 def profile(request, username):
     user_name = get_object_or_404(User, username=username)
-    print(user_name, "")
+    # print(user_name, "")
     posts = Post.objects.filter(author_id__username=user_name)
     count_posts = posts.count()
     data_paginator = create_paginator(request, posts)
@@ -76,7 +76,7 @@ def post_edit(request, username, post_id):
     form = CreatePost(request.POST or None, instance=select_post)
     if form.is_valid():
         form.save()
-        print("validation")
+        print("Post can editable")
         return redirect("post", username=username, post_id=post_id)
 
     return render(request, "add_post.html", {

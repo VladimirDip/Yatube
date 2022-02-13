@@ -40,7 +40,7 @@
                 <div class="card-body">
                     <p class="card-text">
                         <!-- Ссылка на страницу автора в атрибуте href; username автора в тексте ссылки -->
-                        <a href="{% url 'profile' username=post.author %}"><strong class="d-block text-gray-dark">
+                        <a href="{% url 'post' username=post.author post_id=post.id %}"><strong class="d-block text-gray-dark">
                             {{post.author}}</strong></a>
                         {{post.text|truncatewords:40}}
                     </p>

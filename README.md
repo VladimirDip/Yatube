@@ -43,4 +43,7 @@ Day 13: Hello everyone. Today, I worked on my project about
 4 hours with documentation books. I cleaned code a little bit
 and created custom form for registration users and fixed it
 bugs. 
+
+Day 14: Today I added test in my project, sometimes I think
+that I can't do it. But I needed to spend more time for tests:)
         
