@@ -1,4 +1,6 @@
 # Yatube
+I need to write a description here but I want to write about my progressive and some my life.
+
 social network for blogs
 
 This is my first project on Django.
@@ -46,4 +48,8 @@ bugs.
 
 Day 14: Today I added test in my project, sometimes I think
 that I can't do it. But I needed to spend more time for tests:)
+
+Day 15(morning): Good morning world!  I added html pages for error 
+such as 404 and 500 as well as I refactored my code a little bit, 
+and hided a secret information in my settings.py
         

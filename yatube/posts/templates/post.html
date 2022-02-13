@@ -9,11 +9,11 @@
                 <div class="card-body">
                     <div class="h2">
                         <!-- Имя автора -->
-                        {{user_post.author.get_full_name}}
+                        {{author.get_full_name}}
                     </div>
                     <div class="h3 text-muted">
                         <!-- username автора -->
-                        @{{user_post.author.username}}
+                        @{{author}}
                     </div>
                 </div>
                 <ul class="list-group list-group-flush">
@@ -40,15 +40,15 @@
                 <div class="card-body">
                     <p class="card-text">
                         <!-- Ссылка на страницу автора в атрибуте href; username автора в тексте ссылки -->
-                        <a href="{% url 'profile' username=user_post.author%}"><strong class="d-block text-gray-dark">
-                            {{user_post.author}}</strong></a>
+                        <a href="{% url 'profile' username=author%}"><strong class="d-block text-gray-dark">
+                            {{author}}</strong></a>
                         {{user_post.text}}
                     </p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group ">
-                            {%if request.user == user_post.author%}
+                            {%if request.user == author%}
                             <a class="btn btn-sm text-muted"
-                               href="{% url 'post_edit' username=user_post.author post_id=user_post.id%}"
+                               href="{% url 'post_edit' username=author post_id=user_post.id%}"
                                role="button">Редактировать</a>
                             {% endif %}
                         </div>

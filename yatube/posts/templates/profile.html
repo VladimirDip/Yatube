@@ -9,11 +9,11 @@
 
                     <div class="h2">
                         <!-- Имя автора -->
-                        {{user_post.0.author.get_full_name}}
+                        {{ author.get_full_name }}
                     </div>
                     <div class="h3 text-muted">
                         <!-- username автора -->
-                        @{{ user_post.0.author.username }}
+                        @{{ author }}
                     </div>
                 </div>
                 <ul class="list-group list-group-flush">
@@ -34,7 +34,7 @@
         </div>
 
         <div class="col-md-9">
-            {% for post in user_post%}
+            {% for post in page %}
             <!-- Начало блока с отдельным постом -->
             <div class="card mb-3 mt-1 shadow-sm">
                 <div class="card-body">
@@ -66,8 +66,8 @@
             <!-- Остальные посты -->
             {% endfor %}
 
-            {% if user_post.has_other_pages%}
-            {% include "paginator.html" with items=user_post paginator=paginator %}
+            {% if page.has_other_pages%}
+            {% include "paginator.html" with items=page paginator=paginator %}
             {% endif %}
             <!-- Здесь постраничная навигация паджинатора -->
         </div>

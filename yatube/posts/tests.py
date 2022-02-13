@@ -14,7 +14,7 @@ from django.urls import reverse
 from posts.models import User, Post
 
 
-class RegistrationUser(TestCase):
+class SomeTests(TestCase):
 
     def setUp(self):
         self.client = Client()
@@ -68,9 +68,18 @@ class RegistrationUser(TestCase):
         )
         # Check to change count posts
         response = self.client.get(reverse("profile", kwargs={"username": "james"}))
-        self.assertEqual(len(response.context['user_post']),1)
+        self.assertEqual(len(response.context['user_post']), 1)
         # Check redirect unautharized user when his want to add a new post
         response = self.client.get(reverse("new_post"))
         self.assertRedirects(response, '/auth/login/?next=/new/')
 
 
+class TestPageError(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+
+    def test_page_404(self):
+        response = self.client.get("/hhhh/")
+        self.assertEqual(response.status_code, 404)
+        self.assertTemplateUsed("template/misc/404.html")
