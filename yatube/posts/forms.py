@@ -1,8 +1,7 @@
 from django.contrib.auth.models import User
 from django.forms import ModelForm, Textarea
-from . models import Post
+from .models import Post
 from django import forms
-
 
 
 class CreatePost(ModelForm):
@@ -11,7 +10,7 @@ class CreatePost(ModelForm):
         exclude = ['author']
         labels = {
             "text": "Текст",
-            "group": "Выберите группу"
+            "group": "Выберите группу",
+            "image": "Фото"
         }
-
 

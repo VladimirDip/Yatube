@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 
 from .forms import CreatePost
 from .models import Post, User
@@ -35,13 +36,16 @@ def index(request):
 def new_post(request):
     content = {"title_name": "Новый пост", "btn_name": "Добавить пост"}
     if request.method == "POST":
-        form = CreatePost(request.POST)
+        form = CreatePost(request.POST, files=request.FILES or None)
         if form.is_valid():
             author = request.user
             form.cleaned_data['author'] = author
             date_clean = form.cleaned_data
             post = Post.objects.create(**date_clean)
+            messages.success(request, "Пост добавлен")
             return redirect("index")
+        # else:
+        #     print(form.errors)
     else:
         form = CreatePost()
     return render(request, "add_post.html", {"form": form, "content": content})
@@ -77,7 +81,9 @@ def post_edit(request, username, post_id):
     if request.user != profile_person:
         return redirect("post", username=username, post_id=post_id)
 
-    form = CreatePost(request.POST or None, instance=select_post)
+    form = CreatePost(request.POST or None,
+                      instance=select_post,
+                      files=request.FILES or None)
     if form.is_valid():
         form.save()
         print("Post can editable")

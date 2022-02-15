@@ -39,7 +39,8 @@ class SomeTests(TestCase):
         )
         # Get profile new user and check how many posts have user, and the post can see on all urls
         response = self.client.get(reverse('profile', kwargs={'username': 'james'}))
-        self.assertEqual(len(response.context["user_post"]), 2)
+        # print(response.context)
+        self.assertEqual(response.context["count_posts"], 2)
         for url in ("", "/james/", f"/james/{self.post.id}/"):
             response = self.client.get(url)
             self.assertContains(response, self.post.text)
@@ -68,7 +69,7 @@ class SomeTests(TestCase):
         )
         # Check to change count posts
         response = self.client.get(reverse("profile", kwargs={"username": "james"}))
-        self.assertEqual(len(response.context['user_post']), 1)
+        self.assertEqual(response.context["count_posts"], 1)
         # Check redirect unautharized user when his want to add a new post
         response = self.client.get(reverse("new_post"))
         self.assertRedirects(response, '/auth/login/?next=/new/')
@@ -83,3 +84,47 @@ class TestPageError(TestCase):
         response = self.client.get("/hhhh/")
         self.assertEqual(response.status_code, 404)
         self.assertTemplateUsed("template/misc/404.html")
+
+
+class TestImageOnPages(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(
+            username="james",
+            email="bond_j@gmail.com",
+            password="test_bond0987"
+        )
+        self.post = Post.objects.create(
+            text="I check my image",
+            author=self.user,
+
+        )
+        image = "../media/posts/IMG_0607.JPG"
+
+        self.post2 = Post.objects.create(
+                text="Check image file",
+                author=self.user,
+                image=image
+            )
+
+    def test_contains_img_pages(self):
+        response = self.client.get(reverse("profile", kwargs={"username": "james"}))
+        # Check added new post
+        self.assertEqual(response.context["count_posts"], 2)
+        # Check screening <img> on page
+        self.assertContains(response, "img")
+
+    def test_contains_img_all_main_pages(self):
+        for url in ("", "/james/", f"/james/{self.post2.id}/"):
+            response = self.client.get(url)
+            self.assertContains(response, '<img class="card-img"')
+
+    def test_protection_against_not_image_files(self):
+        self.client.login(username="james", password="test_bond0987")
+        with open("models.py", "rb") as img:
+            post = self.client.post("/new/", {"author": self.user,
+                                              "text": "anymore text",
+                                              "image": img})
+            # Check to screen a error when loading an invalid format file
+            self.assertContains(post, "alert alert-danger")

@@ -9,17 +9,22 @@
             <div class="card-header">{{content.title_name}}</div>
             <div class="card-body">
 
-                    {% for error in form.errors %}
-                        <div class="alert alert-danger" role="alert">
-                            {{ error }}
-                        </div>
-                    {% endfor %}
+                    {% if form.errors %}
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    <p> {{ error }} </p>
+                                </div>
+
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
 
                 {% if selected_post is None %}
-                    <form method="post" action="{% url 'new_post' %}">
+                    <form method="post" action="{% url 'new_post' %}" enctype="multipart/form-data">
                         {% else %}
                     <form action="{% url 'post_edit' username=selected_post.author post_id=selected_post.id %}"
-                          method="post">
+                          method="post" enctype="multipart/form-data">
                         {% endif %}
 
                     {% csrf_token %}
