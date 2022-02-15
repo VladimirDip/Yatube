@@ -52,4 +52,10 @@ that I can't do it. But I needed to spend more time for tests:)
 Day 15(morning): Good morning world!  I added html pages for error 
 such as 404 and 500 as well as I refactored my code a little bit, 
 and hided a secret information in my settings.py
+
+Day 16: Hello everyone! I had more problem with sorl-thumbnail.
+It doesn't want to work and screen me image. I broke my DB a bit later...
+Don't worry, I restored it. After all, I could repair sorl-thumbnail 
+but I needed to come in my last commit + restored bd ... 
+Also , I wrote some test for posts with an image 
         

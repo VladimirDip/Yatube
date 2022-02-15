@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 .idea
 yatube/Hide_information/
+yatube/media
 
 # C extensions
 *.so
