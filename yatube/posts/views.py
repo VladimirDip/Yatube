@@ -3,8 +3,8 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 
-from .forms import CreatePost
-from .models import Post, User
+from .forms import CreatePost, CreateComment
+from .models import Post, User, Comment
 
 
 def create_paginator(request, post):
@@ -69,9 +69,13 @@ def post_view(request, username, post_id):
     profile_person = get_object_or_404(User, username=username)
     select_post = get_object_or_404(Post, pk=post_id, author=profile_person.id)
     count_posts = Post.objects.filter(author_id__username=username).count()
+    # comments = select_post.comments.all()
+    comments = Comment.objects.filter(post_id=post_id)
+
     return render(request, "post.html", {"user_post": select_post,
                                          "count_post": count_posts,
-                                         "author": profile_person})
+                                         "author": profile_person,
+                                         "comments": comments})
 
 
 def post_edit(request, username, post_id):
@@ -100,3 +104,23 @@ def page_not_found(request, exeption):
 
 def server_error(request):
     return render(request, "misc/500.html", status=500)
+
+
+@login_required
+def add_comment(request, username, post_id):
+    profile_person = get_object_or_404(User, username=username)
+    select_post = get_object_or_404(Post, pk=post_id, author=profile_person)
+    if request.method == "POST":
+        form = CreateComment(request.POST)
+        print(form)
+        if form.is_valid():
+            author = request.user
+            form.cleaned_data["post"] = select_post
+            form.cleaned_data["author"] = author
+            data_clean = form.cleaned_data
+            comment = Comment.objects.create(**data_clean)
+            messages.success(request, "Коммент поставлен")
+            return redirect("post", username=username, post_id=post_id)
+    else:
+        form = CreateComment()
+    return render(request, "comments.html", {"form": form})

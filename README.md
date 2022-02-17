@@ -58,4 +58,8 @@ It doesn't want to work and screen me image. I broke my DB a bit later...
 Don't worry, I restored it. After all, I could repair sorl-thumbnail 
 but I needed to come in my last commit + restored bd ... 
 Also , I wrote some test for posts with an image 
+
+Day 17: Hello everyone! Today I added function "comments". Now 
+everybody who authorization on site can write comment. Just, 
+I need refactoring my code later
         
