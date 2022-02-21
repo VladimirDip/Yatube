@@ -62,4 +62,6 @@ Also , I wrote some test for posts with an image
 Day 17: Hello everyone! Today I added function "comments". Now 
 everybody who authorization on site can write comment. Just, 
 I need refactoring my code later
-        
+
+Day 18: Today I am doing to optimisation requests in my bd, and 
+some refactoring code

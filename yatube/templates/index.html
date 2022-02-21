@@ -1,36 +1,20 @@
 {% extends "base.html" %}
-
-{% block footer_search %}
+{% block title %} Последние обновления {% endblock %}
 {% load thumbnail %}
 
-<form class="form-inline my-2 my-lg-0" action="/">
-    <div class="form-row">
-        <input name="q" class="form-control mr-sm-2" type="search"
-               placeholder="Поиск" {% if keyword %}value="{{ keyword }}" {% endif %}>
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Найти</button>
-    </div>
-</form>
-{% endblock %}
-
 {% block content %}
-<div class="container" >
-    {% for post in page %}
-    {% thumbnail post.image "960x339" crop="center" upscale=True as im %}
-                <img class="card-img" src="{{ im.url }}">
-            {% endthumbnail %}
-    <strong>
-        Автор:<a href="{% url 'profile' username=post.author.username %}"> {{ post.author.get_full_name }}</a>
+<div class="container">
+           <h1> Последние обновления на сайте</h1>
+            <!-- Вывод ленты записей -->
+                {% for post in page %}
+                  <!-- Вот он, новый include! -->
+                    {% include "post_item.html" with post=post %}
+                {% endfor %}
+    </div>
 
-        Дата публикации: {{ post.pub_date|date:"d M Y" }},
-        Группа: {{ post.group.title }}
-    </strong>
-    <p>{{ post.text|truncatewords:40 }}</p>
-    <hr>
-    {% endfor %}
-
-    {% if page.has_other_pages%}
-        {% include "paginator.html" with items=page paginator=paginator %}
-    {% endif %}
-</div>
+        <!-- Вывод паджинатора -->
+        {% if page.has_other_pages %}
+            {% include "paginator.html" with items=page paginator=paginator%}
+        {% endif %}
 
 {% endblock %}

@@ -7,29 +7,35 @@ from .forms import CreatePost, CreateComment
 from .models import Post, User, Comment
 
 
-def create_paginator(request, post):
+def _create_paginator(request, post):
     paginator = Paginator(post, 10)
     page_number = request.GET.get("page")
     page = paginator.get_page(page_number)
     return page, paginator
 
 
-def index(request):
+def _search_text(request):
     keyword = request.GET.get("q", None)
-    if keyword:
-        posts_list = Post.objects.select_related(
-            "author", "group").filter(
-            text__contains=keyword
-        )
-        print("working")
-    else:
-        posts_list = Post.objects.order_by("-pub_date").all()
+    posts_list = Post.objects.select_related(
+        "author", "group").filter(
+        text__contains=keyword
+    )
+    data_paginator = _create_paginator(request, posts_list)
+    return data_paginator
 
-    data_paginator = create_paginator(request, posts_list)
+
+def index(request):
+    if request.GET.get("q") is None:
+        posts_list = Post.objects.order_by("-pub_date")\
+            .all()\
+            .select_related("author", "group",)\
+            .prefetch_related("comments")
+        data_paginator = _create_paginator(request, posts_list)
+    else:
+        data_paginator = _search_text(request)
+
     return render(request, "index.html", {"page": data_paginator[0],
-                                          "paginator": data_paginator[1]
-                                          }
-                  )
+                                          "paginator": data_paginator[1]})
 
 
 @login_required
@@ -44,8 +50,6 @@ def new_post(request):
             post = Post.objects.create(**date_clean)
             messages.success(request, "Пост добавлен")
             return redirect("index")
-        # else:
-        #     print(form.errors)
     else:
         form = CreatePost()
     return render(request, "add_post.html", {"form": form, "content": content})
@@ -54,26 +58,23 @@ def new_post(request):
 def profile(request, username):
     user_name = get_object_or_404(User, username=username)
     # print(user_name, "")
-    posts = Post.objects.filter(author_id__username=user_name)
-    count_posts = posts.count()
-    data_paginator = create_paginator(request, posts)
+    posts = Post.objects.filter(author_id__username=user_name)\
+        .select_related("author", "group")\
+        .prefetch_related("comments")
+    data_paginator = _create_paginator(request, posts)
     return render(request, "profile.html", {"page": data_paginator[0],
-                                            "count_posts": count_posts,
                                             "paginator": data_paginator[1],
-                                            "author": user_name
-                                            }
-                  )
+                                            "author": user_name})
 
 
 def post_view(request, username, post_id):
     profile_person = get_object_or_404(User, username=username)
+    print(type(profile_person))
     select_post = get_object_or_404(Post, pk=post_id, author=profile_person.id)
-    count_posts = Post.objects.filter(author_id__username=username).count()
     # comments = select_post.comments.all()
-    comments = Comment.objects.filter(post_id=post_id)
+    comments = list(Comment.objects.filter(post_id=post_id).select_related("author", "post"))
 
     return render(request, "post.html", {"user_post": select_post,
-                                         "count_post": count_posts,
                                          "author": profile_person,
                                          "comments": comments})
 

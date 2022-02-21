@@ -1,24 +1,24 @@
 {% extends "base.html" %}
-<h1>{% block title %} Записи сообщества {{ group }}{% endblock %} | Yatube<h1>
+<h1>{% block title %} Записи сообщества {{ group }}{% endblock %} | Yatube
+    <h1>
 
 
-<div class="container">
-    <h1>{% block header %}{{ group }}{% endblock %}</h1>
-    {% block content %}
-        <p>{{ group.description }}</p>
-        {% for item in page %}
-            <h3>
-                Автор: {{ item.author }}, Дата публикации: {{ item.pub_date|date:" d M Y" }}
-            </h3>
-            <p>{{ item.text|linebreaksbr }}</p>
-            {% if not forloop.last %}
-                <hr>{% endif %}
-        {% endfor %}
+        <h1>{% block header %}{{ group }}{% endblock %}</h1>
+        {% block content %}
+        <div class="card mb-3 mt-1 shadow-sm">
+            <strong class="container">
+                <p>#{{ group.description }}#</p>
+            </strong>
 
-        {% if page.has_other_pages%}
-            {% include "paginator.html" with items=page paginator=paginator %}
-            {% endif %}
+            <div class="container">
+                {% for item in page %}
+                {% include "post_item.html" with post=item%}
+                {% endfor %}
 
-        <!-- Содержимое страницы -->
-    {% endblock %}
-</div>
+                {% if page.has_other_pages%}
+                {% include "paginator.html" with items=page paginator=paginator %}
+                {% endif %}
+
+                <!-- Содержимое страницы -->
+                {% endblock %}
+            </div>
