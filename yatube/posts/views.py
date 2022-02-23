@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.views.decorators.cache import cache_page
 
 from .forms import CreatePost, CreateComment
 from .models import Post, User, Comment
@@ -19,17 +20,17 @@ def _search_text(request):
     posts_list = Post.objects.select_related(
         "author", "group").filter(
         text__contains=keyword
-    )
+    ).prefetch_related("comments")
     data_paginator = _create_paginator(request, posts_list)
     return data_paginator
 
-
+@cache_page(20, key_prefix="index_page")
 def index(request):
     if request.GET.get("q") is None:
         posts_list = Post.objects.order_by("-pub_date")\
             .all()\
-            .select_related("author", "group",)\
-            .prefetch_related("comments")
+            .select_related("author", "group", )\
+            .prefetch_related("comments",)
         data_paginator = _create_paginator(request, posts_list)
     else:
         data_paginator = _search_text(request)

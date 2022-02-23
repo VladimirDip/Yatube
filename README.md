@@ -65,3 +65,5 @@ I need refactoring my code later
 
 Day 18: Today I am doing to optimisation requests in my bd, and 
 some refactoring code
+
+Day 19(morning): I added cache for index page and wrote test for them

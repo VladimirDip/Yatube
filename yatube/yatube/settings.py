@@ -119,6 +119,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}
 
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-info',

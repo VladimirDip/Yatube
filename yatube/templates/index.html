@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block title %} Последние обновления {% endblock %}
 {% load thumbnail %}
-
 {% block content %}
 <div class="container">
            <h1> Последние обновления на сайте</h1>
@@ -16,5 +15,6 @@
         {% if page.has_other_pages %}
             {% include "paginator.html" with items=page paginator=paginator%}
         {% endif %}
+
 
 {% endblock %}

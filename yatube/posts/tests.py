@@ -1,4 +1,5 @@
 import django
+from django.core.cache import caches
 import os
 from yatube.settings import LOGIN_URL
 from django.test.utils import setup_test_environment
@@ -128,3 +129,18 @@ class TestImageOnPages(TestCase):
                                               "image": img})
             # Check to screen a error when loading an invalid format file
             self.assertContains(post, "alert alert-danger")
+
+class TestCacheIndexPage(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+
+
+    def test_working_cache(self):
+        with self.assertNumQueries(6):
+            response = self.client.get(reverse("index"))
+            self.assertEqual(response.status_code, 200)
+            # Check my cache with second request
+            response = self.client.get(reverse("index"))
+            self.assertEqual(response.status_code, 200)
+
