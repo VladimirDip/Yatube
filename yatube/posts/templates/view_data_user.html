@@ -16,15 +16,32 @@
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
                         <div class="h6 text-muted">
-                            Подписчиков: xxx <br/>
-                            Подписан: XXX
+                            Подписчиков: {{author.following.count}} <br/>
+                            Подписок: {{author.follower.count}}
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="h6 text-muted">
-                            Записей: {{author.posts.count}}
+                            Записей: {{paginator.count}}
+
                         </div>
                     </li>
+                    <li class="list-group-item">
+    {% if author != request.user%}
+    {{request.user}} ---  {{author.following.all}}
+    {% if request.user in author.following.all %}
+    <a class="btn btn-lg btn-light"
+            href="{% url 'profile_unfollow' author.username %}" role="button">
+            Отписаться
+    </a>
+    {% else %}
+    <a class="btn btn-lg btn-primary"
+            href="{% url 'profile_follow' author.username %}" role="button">
+    Подписаться
+    </a>
+    {% endif %}
+    {% endif %}
+</li>
                 </ul>
             </div>
         </div>

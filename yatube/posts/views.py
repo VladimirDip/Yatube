@@ -3,9 +3,10 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.views.decorators.cache import cache_page
+from django.db.models import Count
 
 from .forms import CreatePost, CreateComment
-from .models import Post, User, Comment
+from .models import Post, User, Comment, Follow
 
 
 def _create_paginator(request, post):
@@ -36,7 +37,10 @@ def index(request):
         data_paginator = _search_text(request)
 
     return render(request, "index.html", {"page": data_paginator[0],
-                                          "paginator": data_paginator[1]})
+                                          "paginator": data_paginator[1],
+                                          "title": "Последние обновления",
+                                          "description": "Последние обновления на сайте",
+                                          "changing_it": "index"})
 
 
 @login_required
@@ -58,7 +62,7 @@ def new_post(request):
 
 def profile(request, username):
     user_name = get_object_or_404(User, username=username)
-    # print(user_name, "")
+    print(user_name.following.all())
     posts = Post.objects.filter(author_id__username=user_name)\
         .select_related("author", "group")\
         .prefetch_related("comments")
@@ -126,3 +130,32 @@ def add_comment(request, username, post_id):
     else:
         form = CreateComment()
     return render(request, "comments.html", {"form": form})
+
+
+@login_required
+def follow_index(request):
+    my_follow = Post.objects.filter(author__following__user=request.user)\
+        .select_related("author", "group")\
+        .prefetch_related("comments")
+
+    data_paginator = _create_paginator(request, my_follow)
+
+    return render(request, "index.html", {"page": data_paginator[0],
+                                           "paginator": data_paginator[1],
+                                           "title": "Подписки",
+                                           "description": "Последние обновления твоих людей",
+                                           "changing_it": "follow"})
+
+@login_required
+def profile_follow(request, username):
+    author = get_object_or_404(User, username=username)
+    if request.user != author:
+        Follow.objects.get_or_create(author=author, user=request.user)
+    return redirect("profile", username=username)
+
+
+@login_required
+def profile_unfollow(request, username):
+    unfollow = Follow.objects.get(author=username, user=request.user.id)
+    unfollow.delete()
+    return redirect('profile', username=username)

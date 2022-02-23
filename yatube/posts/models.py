@@ -28,7 +28,22 @@ class Post(models.Model):
 class Comment(models.Model):
     text = models.TextField(verbose_name="Текст коментария")
     created = models.DateTimeField(verbose_name="Дата написания коментария", auto_now_add=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments", verbose_name="Автор")
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
+
+    class Meta:
+        ordering = ['-created']
+        verbose_name = "Коментарий"
+        verbose_name_plural = "Коментарии"
+
+
+class Follow(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="follower", verbose_name="Подписчик")
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="following", verbose_name="Подписан")
+
+    class Meta:
+        unique_together = ["user", "author"]
+        verbose_name = "Подписчика"
+        verbose_name_plural = "Подписчики"
 
 
