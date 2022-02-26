@@ -46,4 +46,7 @@ class Follow(models.Model):
         verbose_name = "Подписчика"
         verbose_name_plural = "Подписчики"
 
+    def __str__(self):
+        return self.user.username
+
 

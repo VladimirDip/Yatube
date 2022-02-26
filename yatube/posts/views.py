@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import AnonymousUser
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
@@ -62,14 +63,18 @@ def new_post(request):
 
 def profile(request, username):
     user_name = get_object_or_404(User, username=username)
-    print(user_name.following.all())
+    following = None
+    if request.user != AnonymousUser():
+        following = Follow.objects.filter(user=request.user, author=user_name)
+        print(following)
     posts = Post.objects.filter(author_id__username=user_name)\
         .select_related("author", "group")\
         .prefetch_related("comments")
     data_paginator = _create_paginator(request, posts)
     return render(request, "profile.html", {"page": data_paginator[0],
                                             "paginator": data_paginator[1],
-                                            "author": user_name})
+                                            "author": user_name,
+                                            "following": following})
 
 
 def post_view(request, username, post_id):
@@ -156,6 +161,7 @@ def profile_follow(request, username):
 
 @login_required
 def profile_unfollow(request, username):
-    unfollow = Follow.objects.get(author=username, user=request.user.id)
-    unfollow.delete()
+    author = get_object_or_404(User, username=username)
+    if request.user != author:
+        Follow.objects.filter(author=author, user=request.user).delete()
     return redirect('profile', username=username)

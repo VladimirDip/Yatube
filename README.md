@@ -67,3 +67,8 @@ Day 18: Today I am doing to optimisation requests in my bd, and
 some refactoring code
 
 Day 19(morning): I added cache for index page and wrote test for them
+
+Day 20: Hello anyone. I had a lot of problem with my tests....
+And I am continue to write my tests, but I am very tired...Now, 
+I added functional "follow-unfollow" person, and some tests. I need
+write yet some tests and my study project is done. 
