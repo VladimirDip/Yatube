@@ -25,7 +25,9 @@
         <!-- Отображение ссылки на комментарии -->
         <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group ">
+
                 <a class="btn btn-sm text-muted" href="{% url 'post' post.author.username post.id %}" role="button">
+
                     {% if post.comments.exists %}
                     {{ post.comments.count }} комментариев
                     {% else%}

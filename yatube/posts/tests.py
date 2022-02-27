@@ -11,7 +11,6 @@ setup_test_environment()
 
 from django.test import TestCase, Client
 from django.urls import reverse
-
 from posts.models import User, Post, Follow
 
 
@@ -167,6 +166,11 @@ class TestFollowerFollowing(TestCase):
             email="user2@mail.ru",
             password="test12345678"
         )
+        self.user3 = User.objects.create_user(
+            username="user3",
+            email="user3@mail.ru",
+            password="test12345678"
+        )
 
     def test_following_unfollowing(self):
         self.client.login(username="user1", password="test12345678")
@@ -184,3 +188,26 @@ class TestFollowerFollowing(TestCase):
                                        follow=True)
         self.assertEqual(unfollowing.status_code, 200)
         self.assertEqual(following_user1.count(), 0)
+
+    def test_view_new_posts_following(self):
+        post_user1 = Post.objects.create(text="it_post_user1",
+                                         author=self.user1)
+        post_user2 = Post.objects.create(text="it_post_user2",
+                                         author=self.user2)
+        self.client.login(username="user1", password="test12345678")
+        # Check count following by a user1
+        following_user1 = Follow.objects.filter(user=self.user1)
+        self.assertEqual(following_user1.count(), 0)
+        # Following the user1 on the user2 and check his following
+        following = self.client.post(reverse("profile_follow",
+                                             kwargs={"username": self.user2}),
+                                     follow=True)
+        self.assertEqual(following.status_code, 200)
+        self.assertEqual(following_user1.count(), 1)
+        # Check follow_index user1
+        following_index = self.client.get(reverse("follow_index"))
+        self.assertContains(following_index, post_user2.text)
+
+
+class TestCommentAuthorizationUser(TestCase):
+    pass

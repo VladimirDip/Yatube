@@ -72,3 +72,9 @@ Day 20: Hello anyone. I had a lot of problem with my tests....
 And I am continue to write my tests, but I am very tired...Now, 
 I added functional "follow-unfollow" person, and some tests. I need
 write yet some tests and my study project is done. 
+
+Day 21: Hello anyone. It is my last day of work on it project, and
+I need to start a new project, but that project will be more clear
+than it. I finished to write test for project and almost all test
+passed but only one test didn't pass and I don't know why always 
+one test not pass 
